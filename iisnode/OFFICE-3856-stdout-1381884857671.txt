@@ -1,0 +1,8 @@
+server datetime:  2013-10-16T00:54:18.174Z
+info: socket.io started
+debug: served static content /socket.io.js
+debug: client authorized
+info: handshake authorized MTNtAR0vE5UiubwNwZMg
+Sending SGV data to clients.
+The average loss is: 0
+Sending SGV data to clients.
