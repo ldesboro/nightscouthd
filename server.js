@@ -6,7 +6,7 @@
 //Taken from Lane D.
 var bgData = [];
 var test = false;
-var port = process.env.port || 1337;
+var port = process.env.PORT || 1337;
 var refresh_rate = (test === true ? 0.1 : 1) * 60 * 1000;
 var nodeStatic = require('node-static');
 var fs = require('fs');
@@ -14,7 +14,7 @@ var staticServer = new nodeStatic.Server(".");
 var TZ_offset_hrs = new Date().getTimezoneOffset()/60;  
 
 console.log("server datetime: ", new Date().toISOString());
-console.log("timezone: ", TZ_offset_hrs)
+console.log('listening on port ', port);
 
 //Setup node http server
 var server = require('http').createServer(function serverCreator(request, response) {
@@ -57,13 +57,14 @@ c.on('ready', function() {
     stream.pipe(fs.createWriteStream('hayden.csv'));
   });
 });
-// connect to localhost:21 as anonymous
 
-
+// connect to FTP server to grab CSV and save it to Azure
+setInterval(function() {
+    c.connect({host: "ftp.ilovemypancreas.org", user: "ilmp", password: "sam2shadow"});
+}, Math.round(refresh_rate*0.9));
 
 //Reloads the csv file
 function update() {
-	c.connect({host: "ftp.ilovemypancreas.org", user: "ilmp", password: "sam2shadow"});
 	fs.readFile('Hayden.csv', 'utf-8', function fileReader(error, data) {
 	    if (error) {
 	        console.log("Error reading csv file.");
@@ -76,15 +77,15 @@ function update() {
 	        //Only get the most recent sgv data points
 	        for (var i = latest; i > latest - historyLength; i--) {
 	            lines[i] = lines[i].split(",");
-	            actual.unshift({ x: new Date(lines[i][1]).getTime() + TZ_offset_hrs * 60 * 1000, y: lines[i][0] });
+	            actual.unshift({ x: new Date(lines[i][1]).getTime()+(7-TZ_offset_hrs)*3600*1000, y: lines[i][0] });
 	        }
-	        console.log("data timezone: ", new Date(lines[i][1]).getTimezoneOffset() / 60, "  server timezone: ", TZ_offset_hrs);
+	        console.log("data timezone: ", new Date(lines[latest][1]).getTimezoneOffset() / 60, "  server timezone: ", TZ_offset_hrs);
 
 	        //Predict using AR model
 	        var predicted = [];
 	        var actual_len = actual.length - 1;
 	        var lastValidReadingTime = actual[actual_len].x;
-	        var elapsed_min = (actual[actual_len].x - actual[actual_len - 1].x) / 60000;
+	        var elapsed_min = (actual[actual_len].x - actual[actual_len - 1].x) / (60*1000);
 	        var BG_REF = 140;
 	        var y = Math.log(actual[actual_len].y / BG_REF);
 
@@ -111,7 +112,6 @@ function update() {
 
 	        bgData = [actual, predicted];
 	        io.sockets.emit("sgv", bgData);
-	        console.log("Sending SGV data to clients.");
 
 	        var now = Date.now();
 	        var avgLoss = 0;

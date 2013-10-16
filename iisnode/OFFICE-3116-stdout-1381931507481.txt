@@ -1,0 +1,51 @@
+server datetime:  2013-10-16T13:51:47.539Z
+listening on port  \\.\pipe\3e1cb84f-925e-4f8b-a45c-064fb0ae21ac
+info: socket.io started
+listening on server  undefined:undefined
+warn: client not handshaken client should reconnect
+warn: client not handshaken client should reconnect
+updating time scale to 6 hours
+data timezone:  7   server timezone:  7
+The average loss is: 0
+data timezone:  7   server timezone:  7
+The average loss is: 0
+data timezone:  7   server timezone:  7
+The average loss is: 0
+data timezone:  7   server timezone:  7
+The average loss is: 0.01
+updating time scale to 3 hours
+data timezone:  7   server timezone:  7
+The average loss is: 0.01
+updating time scale to 6 hours
+data timezone:  7   server timezone:  7
+The average loss is: 0.01
+data timezone:  7   server timezone:  7
+The average loss is: 0.01
+data timezone:  7   server timezone:  7
+The average loss is: 0.01
+updating time scale to 3 hours
+data timezone:  7   server timezone:  7
+The average loss is: 0.01
+updating time scale to 6 hours
+data timezone:  7   server timezone:  7
+The average loss is: 0.01
+updating time scale to 3 hours
+data timezone:  7   server timezone:  7
+The average loss is: 0.01
+updating time scale to 6 hours
+data timezone:  7   server timezone:  7
+The average loss is: 0.01
+updating time scale to 3 hours
+data timezone:  7   server timezone:  7
+The average loss is: 0.01
+updating time scale to 6 hours
+data timezone:  7   server timezone:  7
+The average loss is: 0.01
+updating time scale to 3 hours
+data timezone:  7   server timezone:  7
+The average loss is: 0.01
+updating time scale to 6 hours
+data timezone:  7   server timezone:  7
+The average loss is: 0.01
+data timezone:  7   server timezone:  7
+The average loss is: 0.01

@@ -1,0 +1,12 @@
+server datetime:  2013-10-16T13:47:07.499Z
+info: socket.io started
+listening on port  undefined
+updating time scale to 6 hours
+data timezone:  7   server timezone:  7
+The average loss is: 0
+warn: client not handshaken client should reconnect
+warn: client not handshaken client should reconnect
+warn: client not handshaken client should reconnect
+warn: client not handshaken client should reconnect
+data timezone:  7   server timezone:  7
+The average loss is: 0

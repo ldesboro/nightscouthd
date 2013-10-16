@@ -1,3 +1,0 @@
-server datetime:  2013-10-16T03:50:42.674Z
-timezone:  7
-info: socket.io started

@@ -56,6 +56,8 @@ nv.addGraph(function () {
 });
 
 function refresh() {
+    
+    console.log("client timezone: ", new Date().getTimezoneOffset() / 60) 
 
     var newTime = new Date();
 
@@ -63,7 +65,7 @@ function refresh() {
 
     d3.select('#chart svg')
         .datum(data)
-        .transition().duration(500)
+        .transition().duration(1000)
         .call(chart);
 
     chart.xAxis
@@ -80,10 +82,20 @@ socket.on('connect', function () {
     refresh()
 });
 
+var TZ_delta_hrs =  new Date().getTimezoneOffset() / 60;
+socket.on('TZ', function (d) {
+    console.log('server timezone: ',d)
+    TZ_delta_hrs -= d ;
+    console.log("client timezone delta: ", TZ_delta_hrs)
+});
+
 socket.on('sgv', function (d) {
-    if(d.length > 1) {
-        data[0].values = d[0].map(function(obj) { return {x: new Date(obj.x), y: obj.y} });
-        data[1].values = d[1].map(function(obj) { return {x: new Date(obj.x), y: obj.y} });
+    //TZ_delta_hrs = 0; //kludge
+    console.log('TZ_delta_hrs: ',TZ_delta_hrs)
+    if (d.length > 1) {
+        data[0].values = d[0].map(function (obj) { return { x: new Date(obj.x).getTime() + TZ_delta_hrs * 3600 * 1000, y: obj.y} });
+        data[1].values = d[1].map(function (obj) { return { x: new Date(obj.x).getTime() + TZ_delta_hrs * 3600 * 1000, y: obj.y} });
         refresh();
     }
+    console.log(data)
 });

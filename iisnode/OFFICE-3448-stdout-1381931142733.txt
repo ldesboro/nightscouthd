@@ -1,0 +1,5 @@
+server datetime:  2013-10-16T13:45:42.791Z
+info: socket.io started
+listening on port  \\.\pipe\efba50cf-af82-4f00-868c-cf25172920d0
+data timezone:  7   server timezone:  7
+The average loss is: 0
