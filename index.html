@@ -66,21 +66,22 @@
     socket.on('connect', function () {
         console.log("Client connected to server.")
     });
-    socket.on('alarm', function() {
-        generateAlarm(alarmSound);
-    });
-    socket.on('urgent_alarm', function() {
-        generateAlarm(urgentAlarmSound);
+    socket.on('TZ', function (TZ_offset_hrs) {    
+        console.log("client timezone: ", TZ_offset_hrs);
     });
 
+    socket.on('alarm', function () {
+        generateAlarm(alarmSound);
+    });
+    socket.on('urgent_alarm', function () {
+        generateAlarm(urgentAlarmSound);
+    });
     //Load alarms
     var alarmSound = document.getElementById('audio');
     var urgentAlarmSound = document.getElementById('audio2');
-
     //Get labels for updating
     var currentBG = $('#currentBG');
-    var bgButton =  $('#bgButton');
-
+    var bgButton = $('#bgButton');
     function generateAlarm(alarmType) {
         alarmType.load();
         alarmType.play();
@@ -90,7 +91,6 @@
         element1.hidden = "true";
         $('#bgButton').text($('#currentBG').text());
     }
-
     function stopAlarm() {
         var element = document.getElementById("bgButton");
         element.hidden = "true";

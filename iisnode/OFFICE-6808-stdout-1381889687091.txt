@@ -1,0 +1,43 @@
+server datetime:  2013-10-16T02:14:47.148Z
+info: socket.io started
+debug: served static content /socket.io.js
+debug: client authorized
+info: handshake authorized Bj5xmVPtLmLcxZBqCz8G
+debug: setting request GET /socket.io/1/websocket/Bj5xmVPtLmLcxZBqCz8G
+debug: set heartbeat interval for client Bj5xmVPtLmLcxZBqCz8G
+debug: client authorized for 
+debug: websocket writing 1::
+debug: set close timeout for client Bj5xmVPtLmLcxZBqCz8G
+info: socket error Error: write EPIPE
+    at errnoException (net.js:901:11)
+    at Socket._write (net.js:643:26)
+    at doWrite (_stream_writable.js:221:10)
+    at writeOrBuffer (_stream_writable.js:211:5)
+    at Socket.Writable.write (_stream_writable.js:180:11)
+    at Socket.write (net.js:613:40)
+    at WebSocket.write (D:\Users\Lane and Lisa.office\Documents\My Web Sites\nightscouthd\node_modules\socket.io\lib\transports\websocket\hybi-16.js:190:19)
+    at WebSocket.Transport.onDispatch (D:\Users\Lane and Lisa.office\Documents\My Web Sites\nightscouthd\node_modules\socket.io\lib\transport.js:222:10)
+    at Socket.dispatch (D:\Users\Lane and Lisa.office\Documents\My Web Sites\nightscouthd\node_modules\socket.io\lib\socket.js:230:38)
+    at Socket.packet (D:\Users\Lane and Lisa.office\Documents\My Web Sites\nightscouthd\node_modules\socket.io\lib\socket.js:214:10)
+debug: websocket writing 5:::{"name":"sgv","args":[[]]}
+debug: setting request GET /socket.io/1/xhr-polling/Bj5xmVPtLmLcxZBqCz8G?t=1381889698779
+debug: setting poll timeout
+debug: discarding transport
+debug: cleared close timeout for client Bj5xmVPtLmLcxZBqCz8G
+debug: cleared heartbeat interval for client Bj5xmVPtLmLcxZBqCz8G
+debug: setting request GET /socket.io/1/jsonp-polling/Bj5xmVPtLmLcxZBqCz8G?t=1381889708781&i=0
+debug: setting poll timeout
+debug: discarding transport
+debug: clearing poll timeout
+debug: clearing poll timeout
+debug: jsonppolling writing io.j[0]("8::");
+debug: set close timeout for client Bj5xmVPtLmLcxZBqCz8G
+debug: jsonppolling closed due to exceeded duration
+debug: setting request GET /socket.io/1/jsonp-polling/Bj5xmVPtLmLcxZBqCz8G?t=1381889728827&i=0
+debug: setting poll timeout
+debug: discarding transport
+debug: cleared close timeout for client Bj5xmVPtLmLcxZBqCz8G
+debug: clearing poll timeout
+debug: jsonppolling writing io.j[0]("5:::{\"name\":\"sgv\",\"args\":[[[{\"x\":1381891952000,\"y\":\"128\"},{\"x\":1381892252000,\"y\":\"117\"},{\"x\":1381892552000,\"y\":\"111\"},{\"x\":1381892852000,\"y\":\"115\"},{\"x\":1381893152000,\"y\":\"119\"},{\"x\":1381893452000,\"y\":\"112\"},{\"x\":1381893752000,\"y\":\"108\"},{\"x\":1381894052000,\"y\":\"103\"},{\"x\":1381894352000,\"y\":\"99\"},{\"x\":1381894652000,\"y\":\"96\"},{\"x\":1381894952000,\"y\":\"94\"},{\"x\":1381895252000,\"y\":\"92\"},{\"x\":1381895552000,\"y\":\"89\"},{\"x\":1381895852000,\"y\":\"87\"},{\"x\":1381896152000,\"y\":\"83\"},{\"x\":1381896452000,\"y\":\"79\"},{\"x\":1381896752000,\"y\":\"63\"},{\"x\":1381897052000,\"y\":\"71\"},{\"x\":1381897352000,\"y\":\"39\"},{\"x\":1381897652000,\"y\":\"39\"},{\"x\":1381897952000,\"y\":\"39\"},{\"x\":1381897952000,\"y\":\"39\"},{\"x\":1381898252000,\"y\":\"41\"},{\"x\":1381898552000,\"y\":\"44\"},{\"x\":1381898852000,\"y\":\"48\"},{\"x\":1381899152000,\"y\":\"52\"},{\"x\":1381899452000,\"y\":\"57\"},{\"x\":1381899752000,\"y\":\"64\"},{\"x\":1381900052000,\"y\":\"65\"},{\"x\":1381900352000,\"y\":\"59\"},{\"x\":1381900652000,\"y\":\"54\"},{\"x\":1381900952000,\"y\":\"50\"},{\"x\":1381901252000,\"y\":\"53\"},{\"x\":1381901552000,\"y\":\"52\"},{\"x\":1381901852000,\"y\":\"57\"},{\"x\":1381902152000,\"y\":\"70\"}],[]]]}");
+debug: set close timeout for client Bj5xmVPtLmLcxZBqCz8G
+Sending SGV data to clients.

@@ -1,0 +1,5 @@
+Application has thrown an uncaught exception and is terminated:
+TypeError: Cannot read property 'y' of undefined
+    at fileReader (D:\Users\Lane and Lisa.office\Documents\My Web Sites\nightscouthd\server.js:118:65)
+    at fs.js:266:14
+    at Object.oncomplete (fs.js:107:15)

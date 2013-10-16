@@ -1,0 +1,41 @@
+server datetime:  2013-10-16T02:41:41.009Z
+timezone:  420
+info: socket.io started
+warn: client not handshaken client should reconnect
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+Sending SGV data to clients.

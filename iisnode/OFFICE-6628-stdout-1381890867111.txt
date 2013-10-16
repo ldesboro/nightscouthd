@@ -1,0 +1,58 @@
+server datetime:  2013-10-16T02:34:27.179Z
+timezone:  420
+info: socket.io started
+debug: setting request GET /socket.io/1/xhr-polling/Yl5tPjPl8f71pBJsHFPf?t=1381890867012
+debug: setting poll timeout
+debug: clearing poll timeout
+debug: xhr-polling writing 7:::1+0
+debug: set close timeout for client Yl5tPjPl8f71pBJsHFPf
+warn: client not handshaken client should reconnect
+info: transport end (error)
+debug: cleared close timeout for client Yl5tPjPl8f71pBJsHFPf
+debug: discarding transport
+debug: setting request GET /socket.io/1/jsonp-polling/Yl5tPjPl8f71pBJsHFPf?t=1381890866975&i=0
+debug: setting poll timeout
+debug: clearing poll timeout
+debug: jsonppolling writing io.j[0]("7:::1+0");
+debug: set close timeout for client Yl5tPjPl8f71pBJsHFPf
+warn: client not handshaken client should reconnect
+info: transport end (error)
+debug: cleared close timeout for client Yl5tPjPl8f71pBJsHFPf
+debug: discarding transport
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+timezone:  420   datetime:  420
+Sending SGV data to clients.

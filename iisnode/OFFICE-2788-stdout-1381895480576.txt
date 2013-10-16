@@ -1,0 +1,6 @@
+server datetime:  2013-10-16T03:51:20.641Z
+timezone:  7
+info: socket.io started
+data timezone:  8   server timezone:  7
+Sending SGV data to clients.
+The average loss is: 0.1

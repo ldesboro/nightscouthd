@@ -1,0 +1,14 @@
+Application has thrown an uncaught exception and is terminated:
+Error: Please login with USER and PASS
+    at makeError (D:\Users\Lane and Lisa.office\Documents\My Web Sites\nightscouthd\node_modules\ftp\lib\connection.js:988:13)
+    at Parser.<anonymous> (D:\Users\Lane and Lisa.office\Documents\My Web Sites\nightscouthd\node_modules\ftp\lib\connection.js:108:25)
+    at Parser.EventEmitter.emit (events.js:98:17)
+    at Parser._write (D:\Users\Lane and Lisa.office\Documents\My Web Sites\nightscouthd\node_modules\ftp\lib\parser.js:57:10)
+    at doWrite (D:\Users\Lane and Lisa.office\Documents\My Web Sites\nightscouthd\node_modules\ftp\node_modules\readable-stream\lib\_stream_writable.js:211:10)
+    at writeOrBuffer (D:\Users\Lane and Lisa.office\Documents\My Web Sites\nightscouthd\node_modules\ftp\node_modules\readable-stream\lib\_stream_writable.js:201:5)
+    at Parser.Writable.write (D:\Users\Lane and Lisa.office\Documents\My Web Sites\nightscouthd\node_modules\ftp\node_modules\readable-stream\lib\_stream_writable.js:172:11)
+    at Socket.ondata (D:\Users\Lane and Lisa.office\Documents\My Web Sites\nightscouthd\node_modules\ftp\lib\connection.js:260:20)
+    at Socket.EventEmitter.emit (events.js:95:17)
+    at Socket.<anonymous> (_stream_readable.js:746:14)
+    at Socket.EventEmitter.emit (events.js:92:17)
+    at emitReadable_ (_stream_readable.js:408:10)
