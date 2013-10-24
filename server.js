@@ -60,7 +60,7 @@ c.on('ready', function() {
 
 // connect to FTP server to grab CSV and save it to Azure
 setInterval(function() {
-    c.connect({host: "ftp.ilovemypancreas.org", user: "ilmp", password: "sam2shadow"});
+    c.connect({host: "ftp.ilovemypancreas.org"});
 }, Math.round(refresh_rate*0.9));
 
 //Reloads the csv file
