@@ -13,18 +13,26 @@ var data = [
 
 var chart;
 var rangeIndex = 1;
-var hours = [3, 6, 12];
+var hours = [3, 6, 12, 24];
 
 nv.addGraph(function () {
     chart = nv.models.scatterChart();
 
+    //var now = Date.now();
+    //console.log("client time: ", now)
     var now = Date.now();
+    socket.on('now', function (d) {
+        //console.log('server time: ', d)
+        now = d;
+        //console.log("server time: ", now)
+    });
+    //console.log("line 29: server time: ", Date(now))
 
     chart.showLegend(false);
 
     chart.xAxis
-        //.ticks(4)
-        //.tickValues([now])
+    //.ticks(4)
+    //.tickValues([now])
         .axisLabel('Time(min)')
         .tickFormat(function (d) {
             return d3.time.format("%H:%M")(new Date(d))
@@ -32,23 +40,23 @@ nv.addGraph(function () {
 
     chart.yAxis
         .tickValues([80, 180])
-    	//.scale(y)
+    //.scale(y)
     	.tickFormat(d3.format("d"))
-    	//.tickValues([40, 60, 80, 120, 180, 300, 400])
-        //.orient("right")
-        //.axisLabel('mg/dL');
+    //.tickValues([40, 60, 80, 120, 180, 300, 400])
+    //.orient("right")
+    //.axisLabel('mg/dL');
 
-    chart.forceY([40,400]);
-    chart.forceX([now-hours[rangeIndex],now+3600*1000]);
+    chart.forceY([40, 400]);
+    chart.forceX([now - hours[rangeIndex], now + 30 * 60 * 1000]);
 
     d3.select('#chart').on("click", function () {
         socket.emit('update', hours[rangeIndex]);
-        rangeIndex = rangeIndex + 1 >= 2 ? 0 : rangeIndex + 1;
+        rangeIndex = rangeIndex + 1 > 3 ? 0 : rangeIndex + 1;
     });
 
     nv.utils.windowResize(chart.update);
 
-    chart.tooltipContent(function(key, x, y) {return y + " mg/dL (" + key + ")" + "\n@" + x;});
+    chart.tooltipContent(function (key, x, y) { return y + " mg/dL (" + key + ")" + "\n@" + x; });
     chart.tooltipXContent(null);
     chart.tooltipYContent(null);
 
@@ -57,9 +65,17 @@ nv.addGraph(function () {
 
 function refresh() {
     
-    console.log("client timezone: ", new Date().getTimezoneOffset() / 60) 
+    //console.log("client timezone: ", new Date().getTimezoneOffset() / 60) 
 
     var newTime = new Date();
+    
+    socket.on('now', function (d) {
+        //console.log('server time: ',d)
+        newTime = Date(d) ;
+        //console.log("server time: ", newTime)
+    });
+    //console.log("line 77: server time: ", newTime)
+
 
     chart.forceX(newTime - hours[rangeIndex - 1]*3600*1000);
 
@@ -78,24 +94,24 @@ function refresh() {
 var socket = io.connect();
 
 socket.on('connect', function () {
-    console.log("Client connected.");
+    //console.log("Client connected.");
     refresh()
 });
 
 var TZ_delta_hrs =  new Date().getTimezoneOffset() / 60;
 socket.on('TZ', function (d) {
-    console.log('server timezone: ',d)
+    //console.log('server timezone: ',d)
     TZ_delta_hrs -= d ;
-    console.log("client timezone delta: ", TZ_delta_hrs)
+    //console.log("client timezone delta: ", TZ_delta_hrs)
 });
 
 socket.on('sgv', function (d) {
-    //TZ_delta_hrs = 0; //kludge
-    console.log('TZ_delta_hrs: ',TZ_delta_hrs)
+    TZ_delta_hrs = 0; //kludge
+    //console.log('TZ_delta_hrs: ',TZ_delta_hrs)
     if (d.length > 1) {
         data[0].values = d[0].map(function (obj) { return { x: new Date(obj.x).getTime() + TZ_delta_hrs * 3600 * 1000, y: obj.y} });
         data[1].values = d[1].map(function (obj) { return { x: new Date(obj.x).getTime() + TZ_delta_hrs * 3600 * 1000, y: obj.y} });
         refresh();
     }
-    console.log(data)
+    //console.log(data)
 });

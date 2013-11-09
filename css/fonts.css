@@ -23,6 +23,7 @@ body {
 .heading, .subheading {
     font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
     text-align: center;
+    font-size: 50px;
 }
 p.lead {
     padding-top: 1.5%;

@@ -12,6 +12,10 @@ var nodeStatic = require('node-static');
 var fs = require('fs');
 var staticServer = new nodeStatic.Server(".");
 var TZ_offset_hrs = new Date().getTimezoneOffset()/60;  
+var ftp = require("./ftp_credentials.json")
+//console.log(ftp)
+//console.log(ftp.host)
+
 
 console.log("server datetime: ", new Date().toISOString());
 console.log('listening on port ', port);
@@ -38,101 +42,122 @@ var server = require('http').createServer(function serverCreator(request, respon
 //Setup socket io for data and message transmission
 var io = require('socket.io').listen(server);
 
-//Default to 36 data points
-var historyLength = 12 * 3;
+//Default to 2 days
+var historyLength = 12 * 24 * 2; //2 days
 
 var clients = [];
 
 //Initialize last ACK to 1 hour ago
-var lastAckTime = Date.now() - 3600000;
+var lastAckTime = Date.now() - 3600*1000;
 
 //Grab csv from ftp site and store locally
 var Client = require('ftp');
 var c = new Client();
 c.on('ready', function() {
-  c.get('dexcom/hayden.csv', function(err, stream) {
+  c.get(ftp.file, function(err, stream) {
     if (err) throw err;
     stream.setEncoding('utf8');
     stream.once('close', function() { c.end(); });
-    stream.pipe(fs.createWriteStream('hayden.csv'));
+    stream.pipe(fs.createWriteStream('hayden.csv',{'flags':'w'}));  //append using 'a' flag
   });
 });
 
 // connect to FTP server to grab CSV and save it to Azure
 setInterval(function() {
-    c.connect({host: "ftp.ilovemypancreas.org", user: "ilmp", password: "sam2shadow"});
+    c.connect({host: ftp.host, user: ftp.user, password: ftp.password});
 }, Math.round(refresh_rate*0.9));
 
 //Reloads the csv file
 function update() {
-	fs.readFile('Hayden.csv', 'utf-8', function fileReader(error, data) {
-	    if (error) {
-	        console.log("Error reading csv file.");
-	    } else {
-	        // parse the csv file into lines
-	        var lines = data.trim().split('\n');
-	        var latest = lines.length - 1;
-	        var actual = [];
+    fs.readFile('Hayden.csv', 'utf-8', function fileReader(error, data) {
+        if (error) {
+            console.log("Error reading csv file.");
+        } else {
+            // parse the csv file into lines
+            var lines_with_duplicates = data.trim().split('\n');
+            //console.log('lwd: ', lines_with_duplicates);
+            var lines = lines_with_duplicates.filter(function (elem, pos) {
+                return lines_with_duplicates.indexOf(elem) == pos;
+            })
+            //console.log(lines)
+            //console.log('duplicates data rows: ', lines_with_duplicates.length - lines.length)
+            //console.log(lines_with_duplicates[1], lines[1])
+            var latest = lines.length - 1;
+            var actual = [];
 
-	        //Only get the most recent sgv data points
-	        for (var i = latest; i > latest - historyLength; i--) {
-	            lines[i] = lines[i].split(",");
-	            actual.unshift({ x: new Date(lines[i][1]).getTime()+(7-TZ_offset_hrs)*3600*1000, y: lines[i][0] });
-	        }
-	        console.log("data timezone: ", new Date(lines[latest][1]).getTimezoneOffset() / 60, "  server timezone: ", TZ_offset_hrs);
+            //Only get the most recent sgv data points
+            console.log('latest - historyLength', latest - historyLength)
+            for (var i = latest; i > Math.max(0, latest - historyLength); i--) {
+                lines[i] = lines[i].split(",");
+                if (lines[i][0] > 10) {
+                    actual.unshift({ x: new Date(lines[i][1]).getTime() + (9 - TZ_offset_hrs) * 3600 * 1000, y: lines[i][0] });
+                }
+            }
 
-	        //Predict using AR model
-	        var predicted = [];
-	        var actual_len = actual.length - 1;
-	        var lastValidReadingTime = actual[actual_len].x;
-	        var elapsed_min = (actual[actual_len].x - actual[actual_len - 1].x) / (60*1000);
-	        var BG_REF = 140;
-	        var y = Math.log(actual[actual_len].y / BG_REF);
+            console.log("data timezone: ", new Date(lines[latest][1]).getTimezoneOffset() / 60, "  server timezone: ", TZ_offset_hrs);
+            //console.log(actual)
 
-	        if (elapsed_min < 5.1) {
-	            y = [Math.log(actual[actual_len - 1].y / BG_REF), y];
-	        } else {
-	            y = [y, y];
-	        }
+            //Predict using AR model
+            var predicted = [];
+            var actual_len = actual.length - 1;
+            var lastValidReadingTime = actual[actual_len].x;
+            console.log('most recent data point: ', Date(actual[actual_len].x), actual[actual_len].y)
 
-	        var n = Math.ceil(12 * (1 / 2 + (Date.now() - lastValidReadingTime) / 3600 / 1000));   //Predict 1/2 hour ahead
-	        var AR = [-0.723, 1.716];                   //AR calculation constants
-	        var dt = actual[actual_len].x;
-	        for (i = 0; i <= n; i++) {
-	            y = [y[1], AR[0] * y[0] + AR[1] * y[1]];
-	            dt = dt + 5 * 60 * 1000;
-	            predicted[i] = {
-	                x: dt,
-	                y: Math.round(BG_REF * Math.exp(y[1]))
-	            };
-	        }
+            var elapsed_min = (actual[actual_len].x - actual[actual_len - 1].x) / (60 * 1000);
+            var BG_REF = 140;
+            var y = Math.log(actual[actual_len].y / BG_REF);
 
-	        //Remove measured points that don't lie within the time range
-	        while (actual.length > 0 && actual[0].x < Date.now() - historyLength * 5 * 60 * 1000) { actual.shift(); }
+            if (elapsed_min < 5.1) {
+                y = [Math.log(actual[actual_len - 1].y / BG_REF), y];
+            } else {
+                y = [y, y];
+            }
 
-	        bgData = [actual, predicted];
-	        io.sockets.emit("sgv", bgData);
+            var n = Math.ceil(12 * (1 / 2 + (Date.now() - lastValidReadingTime) / 3600 / 1000));   //Predict 1/2 hour ahead
+            var AR = [-0.723, 1.716];                   //AR calculation constants
+            var dt = actual[actual_len].x;
+            for (i = 0; i <= n; i++) {
+                y = [y[1], AR[0] * y[0] + AR[1] * y[1]];
+                dt = dt + 5 * 60 * 1000;
+                predicted[i] = {
+                    x: dt,
+                    y: Math.max(36,Math.min(400,Math.round(BG_REF * Math.exp(y[1]))))
+                };
+            }
 
-	        var now = Date.now();
-	        var avgLoss = 0;
-	        if (now > lastAckTime + 40 / 60 * 3600 * 1000) {
-	            for (i = 0; i <= 6; i++) {
-	                avgLoss += 1 / 6 * Math.pow(log10(predicted[i].y / 120), 2);
-	            }
-	            console.log("The average loss is: " + Math.round(avgLoss * 100) / 100);
-	            if (avgLoss > 0.2) {
-	                io.sockets.emit('urgent_alarm');
-	            } else if (avgLoss > 0.05) {
-	                io.sockets.emit('alarm');
-	            }
-	        }
-	    }
-	});
+            //Remove measured points that don't lie within the time range
+            console.log('historyLength:  ', historyLength)
+            while (actual.length > 0 && actual[0].x < Date.now() - historyLength * 5 * 60 * 1000) { actual.shift(); }
+
+            bgData = [actual, predicted];
+            io.sockets.emit("sgv", bgData);
+            //console.log(bgData)
+
+            var now = Date.now();
+            io.sockets.emit("now", now)
+            var avgLoss = 0;
+            console.log(Date(now), ' now');
+            console.log(Date(lastAckTime + 40 / 60 * 3600 * 1000), ' 40 min from last ack');
+            if (now > lastAckTime + 40 / 60 * 3600 * 1000) {
+                for (i = 0; i <= 6; i++) {
+                    avgLoss += 1 / 6 * Math.pow(log10(predicted[i].y / 120), 2);
+                }
+                console.log("The average loss is: " + Math.round(avgLoss * 100) / 100);
+                if (avgLoss > 0.2) {
+                    io.sockets.emit('urgent_alarm');
+                    appendlog('urgent_alarm');
+                } else if (avgLoss > 0.05) {
+                    io.sockets.emit('alarm');
+                    appendlog('alarm');
+                }
+            }
+        }
+    });
 }
 
 var sensorReadID = setInterval(update, refresh_rate);
 
-io.set('log level', 1); // reduce logging
+io.set('log level', 0); // reduce logging
 //Windows Azure Web Sites does not currently support WebSockets, so for long-polling
 io.configure(function () {                
   io.set('transports', ['xhr-polling']);  
@@ -141,12 +166,20 @@ io.configure(function () {
 io.sockets.on('connection', function (socket) {
     socket.emit("TZ", TZ_offset_hrs);
     socket.emit("sgv", bgData);
-    socket.on('update', function (data) {
-        console.log("updating time scale to " + data + " hours");
-        historyLength = data * 12;
-        update();
-    });
-    socket.on('ack', function(time) { lastAckTime = time; })
+//    socket.on('update', function (data) {
+//        appendlog('rescale');
+//        console.log("updating time scale to " + data + " hours");
+//        historyLength = data * 12;
+//        update();
+//    });
+    socket.on('ack', function(time) { lastAckTime = Date.now(); appendlog('ack') }) //used to use 'time' but client / server time mismatch screwed this up
 });
 
 function log10(val) { return Math.log(val) / Math.LN10; }
+
+function appendlog(message) {
+    console.log(Date+'\t'+message)
+    fs.appendFile('log.csv', Date()+'\t'+message+'\n', encoding='utf8', function (err) {
+    if (err) throw err;
+    });
+}
