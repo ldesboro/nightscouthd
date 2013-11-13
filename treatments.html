@@ -90,6 +90,43 @@
 			console.log('min / max: ', minx, maxx)
 			x.domain([minx, maxx])
 
+            // add a y-axis line that shows the high bg threshold
+			g.append("line")
+			.attr("class", "high-line")
+			.attr("x1", x(minx))
+			.attr("y1", y(400))
+			.attr("x2", x(maxx))
+			.attr("y2", y(400))
+			.attr("stroke", "grey");
+
+            // add a y-axis line that shows the high bg threshold
+			g.append("line")
+			.attr("class", "high-line")
+			.attr("x1", x(minx))
+			.attr("y1", y(180))
+			.attr("x2", x(maxx))
+			.attr("y2", y(180))
+			.style("stroke-dasharray", ("3, 3"))
+			.attr("stroke", "grey");
+
+			// add a y-axis line that shows the low bg threshold
+			g.append("line")
+			.attr("class", "low-line")
+			.attr("x1", x(minx))
+			.attr("y1", y(80))
+			.attr("x2", x(maxx))
+			.attr("y2", y(80))
+			.style("stroke-dasharray", ("3, 3"))
+			.attr("stroke", "grey");
+
+            // add a y-axis line that shows the high bg threshold
+			g.append("line")
+			.attr("class", "high-line")
+			.attr("x1", x(minx))
+			.attr("y1", y(36))
+			.attr("x2", x(maxx))
+			.attr("y2", y(36))
+			.attr("stroke", "grey");
 
 			//console.log(treatment)
 			//console.log(treatment.x)
